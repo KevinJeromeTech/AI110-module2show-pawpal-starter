@@ -1,0 +1,75 @@
+classDiagram
+    %% Final diagram: matches pawpal_system.py as built.
+
+    class Owner {
+        +str name
+        +str day_start
+        +str day_end
+        +list~Pet~ pets
+        +available_minutes() int
+        +add_pet(pet: Pet) None
+        +get_pet(name: str) Pet
+        +get_all_tasks() list~Task~
+    }
+
+    class Pet {
+        +str name
+        +str species
+        +list~Task~ tasks
+        +add_task(task: Task) None
+        +remove_task(title: str) bool
+        +mark_task_complete(title: str) Task
+    }
+
+    class Task {
+        +str title
+        +int duration_minutes
+        +str priority
+        +str time
+        +str frequency
+        +int weekday
+        +str pet_name
+        +bool completed
+        +date due_date
+        +priority_rank() int
+        +is_due_on(day: date) bool
+        +mark_complete() Task
+    }
+
+    class Scheduler {
+        +Owner owner
+        +sort_by_time(tasks) list~Task~
+        +sort_by_priority(tasks) list~Task~
+        +tasks_due(day: date) list~Task~
+        +filter_tasks(pet_name, completed, priority) list~Task~
+        +find_conflicts(tasks) list~str~
+        +next_available_slot(busy, duration, earliest) int
+        +is_free(busy, start, end) bool
+        +build_plan(day: date) DailyPlan
+    }
+
+    class DailyPlan {
+        +date day
+        +list~ScheduledItem~ items
+        +list skipped
+        +list~str~ warnings
+        +total_minutes() int
+        +to_rows() list~dict~
+        +explain() str
+    }
+
+    class ScheduledItem {
+        +Task task
+        +int start
+        +str reason
+        +end() int
+        +start_str() str
+        +end_str() str
+    }
+
+    Owner "1" o-- "*" Pet : owns
+    Pet "1" o-- "*" Task : has
+    Scheduler --> Owner : reads get_all_tasks()
+    Scheduler ..> DailyPlan : creates
+    DailyPlan "1" *-- "*" ScheduledItem : contains
+    ScheduledItem --> Task : places
