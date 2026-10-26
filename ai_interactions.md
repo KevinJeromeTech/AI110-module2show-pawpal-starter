@@ -22,7 +22,6 @@ Build PawPal+ from the starter repo and the assignment brief: the UML, the class
 
 **What did you have to verify or fix manually?**
 
-<!-- Kevin: edit to match what you actually checked. -->
 1. The first version didn't match the assignment's required names (`get_all_tasks`, `sort_by_time` on tasks, a separate `main.py`), so I had it updated.
 2. A recurrence bug: the next copy of a completed daily task showed up on today's plan. It was fixed in `Task.is_due_on()` and covered by a new test.
 3. I read through `main.py`'s output to confirm conflicts, skips, and moved tasks made sense.
